@@ -3,5 +3,5 @@ export const config = {
   numberOfResults: 25,
   passwordLengthMin: 40,
   passwordLengthMax: 50,
-
+  nationalities: "us,gb",
 };

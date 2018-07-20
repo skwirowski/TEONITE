@@ -4,7 +4,7 @@ import Stats from './Components/stats.component';
 
 ReactDOM.render(
 
-  <Stats welcome="nothing to see here, really"/>,
+  <Stats />,
 
   document.getElementById('root')
 );
