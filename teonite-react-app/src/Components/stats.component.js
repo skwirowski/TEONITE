@@ -1,14 +1,21 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {config} from '../Utilities/config';
+import SelectElements from "./selectElements.component";
+import DisplayElements from "./displayElements.component";
+import ShowHideElements from "./showHideElements";
 
-class Stats extends React.Component {
+class Stats extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       usersData: [],
-      optionsSelectedValues: [],
+      activeElements: [],
+      isSelectAllClicked: false,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleRemoveClick = this.handleRemoveClick.bind(this);
+    this.handleSelectAllClick = this.handleSelectAllClick.bind(this);
+    this.handleSelectNoneClick = this.handleSelectNoneClick.bind(this);
   }
 
   componentDidMount() {
@@ -40,11 +47,12 @@ class Stats extends React.Component {
   - new object is pushed to empty array completeDataArray,
   - this operation is done for every data array index (array.length) by for loop,
   - completeDataArray with all new objects is returned
-  - object array is sorted alphabetically using by last name by sortArrayAlphabeticallyByLastName function
+  - object array is sorted alphabetically using by last name by sortArrayAlphabeticallyByLastName function.
   */
 
-  prepareDataArray = (array) => {
+  prepareDataArray = array => {
     let completeDataArray = [];
+
     for (let i = 0; i < array.length; i++) {
       const firstName = this.capitalizeFirstLetter(array[i].name.first);
       const lastName = this.capitalizeFirstLetter(array[i].name.last);
@@ -76,94 +84,91 @@ class Stats extends React.Component {
     return array;
   };
 
-  renderNamesSelectOptions = (array) => array.map((user, index) =>
-    <option
-      key={index}
-      value={user.lastName + " " + user.firstName}
-      id={user.password}
-    >
-      {user.lastName} {user.firstName}
-    </option>
-  );
+  /*
+  ============================== Handling Option Selection ==============================
+  - chosen option value is received from SelectElements Component,
+  - function isDuplicated checks (filters) if chosen value occurs in activeElements state array,
+  - if condition checks if isDuplicated function returns true or if chosen value is equal ignored option:
+    ~ if true - handleChange function sets state to it's unchanged value,
+    ~ if false - handleChange function adds new element to activeElements array.
+  */
 
-  handleChange = (event) => {
-    const selectedNameValue = event.target.value;
+  handleChange = (selectedElement) => {
+    const activeElements = this.state.activeElements;
+    const ignoredOption = "Select an Author";
 
-    console.log(this.isDuplicated(this.state.optionsSelectedValues, selectedNameValue));
-
-    this.setState(prevState => ({
-        optionsSelectedValues: [...prevState.optionsSelectedValues, selectedNameValue],
-      })
-    );
-
-    // let isDuplicated = this.state.optionsSelectedValues.filter(item => {
-    //     if (item === selectedNameId) {
-    //       return true
-    //     }
-    //     return false
-    //   });
-    // console.log(isDuplicated);
-
-
-
-
-
-
-    // this.setState(prevState => ({
-    //     optionsSelectedValues: [...prevState.optionsSelectedValues, selectedNameValue],
-    //   })
-    // );
-    //
-    // let newArray = this.state.optionsSelectedValues.filter(item => {
-    //   if ((item.lastName + " " + item.firstName) !== selectedNameValue) {
-    //     return selectedNameValue
-    //   }
-    //   return
-    // });
-
-
-    // const stateArray = this.state.optionsSelectedValues;
-    // let newArray = stateArray.filter(item => {
-    //   if (selectedNameValue !== item.)
-    // })
-    //
-    //
-    // return [...this.state.optionsSelectedValues, selectedNameValue].filter(item => {
-    //   if (item)
-    // })
-    //
-    // if (this.state.isNameClicked) {
-    //   const copiedArray = [...this.state.optionsSelectedValues];
-    //   const elementIndex = copiedArray.indexOf(selectedNameValue);
-    //   copiedArray.splice(elementIndex, 1);
-    //   this.setState({
-    //     optionsSelectedValues: copiedArray,
-    //   });
-    // } else {
-    //
-    // }
-
+    if (this.isDuplicated(activeElements, selectedElement) || selectedElement === ignoredOption) {
+      this.setState(this.state.activeElements);
+    } else {
+      this.setState(prevState => ({
+          activeElements: [...prevState.activeElements, selectedElement],
+        })
+      );
+    }
   };
 
   isDuplicated = (array, comparedItem) => {
-    let newArray = array.filter((item) => {
-      return item === comparedItem;
-    });
-    if (newArray.length === 0) {
-      return false
-    }
-    return true
+    let newArray = array.filter(item => item === comparedItem);
+    return newArray.length !== 0;
   };
 
+  /*
+============================== Handling Removing Selection ==============================
+- clicked button value is received from displayElements Component,
+- function removeElement filters activeElements state array and returns new array excluding deleted element.
+*/
+
+  handleRemoveClick = (selectedElement) => {
+    const activeElements = this.state.activeElements;
+    let newArray = this.removeElement(activeElements, selectedElement);
+
+    this.setState({
+      activeElements: newArray,
+    });
+  };
+
+  removeElement = (array, comparedItem) => array.filter(item => item !== comparedItem);
+
+  handleSelectAllClick = () => {
+    const rawApiData = this.state.usersData;
+    const completeDataArray = this.prepareDataArray(rawApiData);
+    const sortedCompleteDataArray = this.sortArrayAlphabeticallyByLastName(completeDataArray);
+    const allActiveElementsArray = this.selectAllElementsFromDataArray(sortedCompleteDataArray);
+    this.setState({
+      activeElements: allActiveElementsArray,
+      isSelectAllClicked: true,
+    })
+  };
+
+  selectAllElementsFromDataArray = array => {
+    let completeDataArray = [];
+
+    for(let i = 0; i < array.length; i++) {
+      const firstName = array[i].firstName;
+      const lastName = array[i].lastName;
+      const fullName = `${lastName} ${firstName}`;
+
+      completeDataArray.push(fullName);
+    }
+    return completeDataArray;
+  };
+
+  handleSelectNoneClick = () => {
+    this.setState({
+      activeElements: [],
+      isSelectAllClicked: false,
+    })
+  };
 
   componentDidUpdate() {
-    // const checkAPI = () => console.log(this.state.usersData);
-    // checkAPI();
-    // const completeDataArray = this.prepareDataArray(this.state.usersData);
-    //
-    // console.log(completeDataArray);
-    // console.log(this.sortArrayAlphabeticallyByLastName(completeDataArray));
-    console.log(this.state.optionsSelectedValues);
+    const checkAPI = () => console.log(this.state.usersData);
+    checkAPI();
+    const completeDataArray = this.prepareDataArray(this.state.usersData);
+
+    console.log(completeDataArray);
+    console.log(this.sortArrayAlphabeticallyByLastName(completeDataArray));
+    console.log(this.state.activeElements);
+    console.log(this.state.isSelectAllClicked);
   }
 
   render() {
@@ -172,16 +177,23 @@ class Stats extends React.Component {
     const sortedCompleteDataArray = this.sortArrayAlphabeticallyByLastName(completeDataArray);
 
     return(
-      <div>
-        <select onChange={this.handleChange}>
-          <option></option>
-          <option>Select All</option>
-          {this.renderNamesSelectOptions(sortedCompleteDataArray)}
-        </select>
+      <Fragment>
+        <SelectElements
+          onActiveElementsChange = {this.handleChange}
+          names={sortedCompleteDataArray}
+        />
 
-      </div>
+        <ShowHideElements isShowHideButtonClicked = {this.state.isSelectAllClicked}
+                          onShowNoneClick = {this.handleSelectNoneClick}
+                          onShowAllClick = {this.handleSelectAllClick}
+        />
+
+        <DisplayElements
+          activeElements = {this.state.activeElements}
+          onDeleteElementClick = {this.handleRemoveClick}
+        />
+      </Fragment>
     );
   }
 }
-
 export default Stats;
