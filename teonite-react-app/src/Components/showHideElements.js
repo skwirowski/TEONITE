@@ -7,12 +7,12 @@ class ShowHideElements extends React.PureComponent {
     this.handleSelectAllClick = this.handleSelectAllClick.bind(this);
   }
 
-  handleSelectNoneClick = (event) => {
+  handleSelectNoneClick = event => {
     event.preventDefault();
     this.props.onShowNoneClick();
   };
 
-  handleSelectAllClick = (event) => {
+  handleSelectAllClick = event => {
     event.preventDefault();
     this.props.onShowAllClick();
   };

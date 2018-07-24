@@ -3,6 +3,7 @@ import {config} from '../Utilities/config';
 import SelectElements from "./selectElements.component";
 import DisplayElements from "./displayElements.component";
 import ShowHideElements from "./showHideElements";
+import DisplayResultsTable from "./displayResultsTable.component";
 
 class Stats extends React.PureComponent {
   constructor(props) {
@@ -160,21 +161,61 @@ class Stats extends React.PureComponent {
     })
   };
 
-  componentDidUpdate() {
-    const checkAPI = () => console.log(this.state.usersData);
-    checkAPI();
-    const completeDataArray = this.prepareDataArray(this.state.usersData);
+  prepareCompleteDataArrayToComparison = (array) => {
+    let selectedElementsToComparison = [];
 
-    console.log(completeDataArray);
-    console.log(this.sortArrayAlphabeticallyByLastName(completeDataArray));
-    console.log(this.state.activeElements);
-    console.log(this.state.isSelectAllClicked);
+    for (let i = 0; i < array.length; i++) {
+      const fullName = array[i].lastName + ' ' + array[i].firstName;
+      const password = array[i].password;
+      const selectedElements = {
+        fullName,
+        password,
+      };
+      selectedElementsToComparison.push(selectedElements);
+    }
+    return selectedElementsToComparison
+  };
+
+  filterActiveElementsFromCompleteData = (array, comparedItem) => {
+    let activeElementsToDisplay = [];
+
+      for(let i = 0; i < array.length; i++) {
+        let newArray = array.filter(item => item.fullName === comparedItem[i]);
+
+        if(newArray.length !== 0) {
+          for(let j = 0; j < newArray.length; j++) {
+            activeElementsToDisplay.push(newArray[j]);
+          }
+        }
+      }
+      return activeElementsToDisplay;
+  };
+
+  componentDidUpdate() {
+    // const checkAPI = () => console.log(this.state.usersData);
+    // checkAPI();
+    const rawApiData = this.state.usersData;
+    const completeDataArray = this.prepareDataArray(rawApiData);
+    const sortedCompleteDataArray = this.sortArrayAlphabeticallyByLastName(completeDataArray);
+    const activeElements = this.state.activeElements;
+    const selectedElementsToComparison = this.prepareCompleteDataArrayToComparison(sortedCompleteDataArray);
+    const activeElementsToDisplay = this.filterActiveElementsFromCompleteData(selectedElementsToComparison, activeElements);
+
+    // console.log(rawApiData);
+    // console.log(this.sortArrayAlphabeticallyByLastName(completeDataArray));
+    // console.log(activeElements);
+    // console.log(this.state.isSelectAllClicked);
+    // console.log(selectedElementsToComparison);
+    // console.log(activeElementsToDisplay);
   }
 
   render() {
     const rawApiData = this.state.usersData;
     const completeDataArray = this.prepareDataArray(rawApiData);
     const sortedCompleteDataArray = this.sortArrayAlphabeticallyByLastName(completeDataArray);
+    const dataArrayToComparison = this.prepareCompleteDataArrayToComparison(sortedCompleteDataArray);
+    const activeElements = this.state.activeElements;
+    const filteredActiveElements = this.filterActiveElementsFromCompleteData(dataArrayToComparison, activeElements);
 
     return(
       <Fragment>
@@ -192,6 +233,8 @@ class Stats extends React.PureComponent {
           activeElements = {this.state.activeElements}
           onDeleteElementClick = {this.handleRemoveClick}
         />
+
+        <DisplayResultsTable activeElements = {filteredActiveElements} />
       </Fragment>
     );
   }
