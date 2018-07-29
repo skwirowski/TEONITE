@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 
 import {config} from '../Utilities/config';
 import Select from './select.component';
@@ -7,7 +7,7 @@ import ButtonSelectAllUsers from "./buttonSelectAll.component";
 import ButtonRemoveAll from "./buttonRemoveAll.component";
 import Letters from './letters.component';
 
-class Main extends React.PureComponent {
+class Main extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,11 +15,6 @@ class Main extends React.PureComponent {
       userData: [],
       activeUsers: [],
     };
-
-    this.handleActiveUserChange = this.handleActiveUserChange.bind(this);
-    this.handleRemoveUserClick = this.handleRemoveUserClick.bind(this);
-    this.handleSelectAllUsersClick = this.handleSelectAllUsersClick.bind(this);
-    this.handleRemoveAllUsersClick = this.handleRemoveAllUsersClick.bind(this);
   }
 
 /*
@@ -170,10 +165,6 @@ class Main extends React.PureComponent {
   handleRemoveAllUsersClick = () => this.setState({
     activeUsers: [],
   });
-
-  componentDidUpdate() {
-
-  }
 
   render() {
     const isDataLoaded = this.state.isDataLoaded;
