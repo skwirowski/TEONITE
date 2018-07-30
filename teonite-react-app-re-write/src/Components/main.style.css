@@ -1,0 +1,64 @@
+@import '../Utilities/fonts.css';
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.main-container {
+  background: #efefef;
+}
+
+.main-select-button-container {
+  margin-bottom: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .main-select-button-container {
+    margin-bottom: 5px;
+  }
+}
+
+/* Loader Styles */
+.main-loader {
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%, -50%);
+
+  width:200px;
+  height:200px;
+}
+
+.main-loader hr {
+  border:0;
+  margin:0;
+  width:40%;
+  height:40%;
+  position:absolute;
+  border-radius:50%;
+  animation:spin 2s ease infinite}
+
+.main-loader :first-child {
+  background:#19A68C;
+  animation-delay:-1.5s
+}
+
+.main-loader :nth-child(2) {
+  background:#F63D3A;
+  animation-delay:-1s
+}
+
+.main-loader :nth-child(3) {
+  background:#FDA543;
+  animation-delay:-0.5s
+}
+
+.main-loader :last-child {
+  background:#193B48
+}
+
+@keyframes spin{
+  0%, 100% {transform:translate(0)}
+  25% {transform:translate(160%)}
+  50% {transform:translate(160%, 160%)}
+  75% {transform:translate(0, 160%)}
+}

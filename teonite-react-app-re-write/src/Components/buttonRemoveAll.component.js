@@ -1,4 +1,7 @@
 import React from 'react';
+import {Button} from 'react-bootstrap';
+
+import './buttonRemoveAll.component.css';
 
 function ButtonRemoveAll(props) {
 /*
@@ -10,7 +13,13 @@ function ButtonRemoveAll(props) {
   };
 
   return(
-    <button onClick = {handleClick}>Select None</button>
+    <Button
+      className = "remove-all-button"
+      bsStyle = "primary"
+      onClick = {handleClick}
+    >
+      Select None
+    </Button>
   );
 }
 

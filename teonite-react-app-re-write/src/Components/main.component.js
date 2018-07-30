@@ -1,6 +1,9 @@
-import React, {PureComponent, Fragment} from 'react';
+import React, {PureComponent} from 'react';
+import {Grid, Row, Col} from 'react-bootstrap';
 
 import {config} from '../Utilities/config';
+import './main.style.css';
+import Logo from './logo.component';
 import Select from './select.component';
 import ButtonsSingleRemove from "./buttonsSingleRemove.component";
 import ButtonSelectAllUsers from "./buttonSelectAll.component";
@@ -34,10 +37,12 @@ class Main extends PureComponent {
       .then(data => data.results)
       .then(data => {
         const alphabeticallySortedDataResults = this.sortArrayAlphabeticallyByLastName(data);
-        this.setState({
-          isDataLoaded: true,
-          userData: alphabeticallySortedDataResults,
-        })
+        setTimeout(() => {
+          this.setState({
+            isDataLoaded: true,
+            userData: alphabeticallySortedDataResults,
+          });
+        }, 2000);
       })
       .catch(error => console.log('DATA FETCH ERROR', error));
   }
@@ -172,14 +177,25 @@ class Main extends PureComponent {
     if(isDataLoaded) {
 
       return(
-        <Fragment>
-          <Select
-            selectOptionsData = {this.state.userData}
-            onActiveUserChange = {this.handleActiveUserChange}
-          />
+        <Grid className = "main-container">
+          <Row className = "show-grid">
+          <Logo />
 
-          <ButtonSelectAllUsers onSelectAllUsersClick = {this.handleSelectAllUsersClick} />
-          <ButtonRemoveAll onRemoveAllUsersClick = {this.handleRemoveAllUsersClick} />
+          <Grid className = "main-select-button-container">
+            <Row className = "show-grid main-select-button-container">
+              <Col xs = {12} sm = {6} md = {8}>
+                <Select
+                  selectOptionsData = {this.state.userData}
+                  onActiveUserChange = {this.handleActiveUserChange}
+                />
+              </Col>
+
+              <Col xs = {12} sm = {6} md = {4}>
+                <ButtonSelectAllUsers onSelectAllUsersClick = {this.handleSelectAllUsersClick} />
+                <ButtonRemoveAll onRemoveAllUsersClick = {this.handleRemoveAllUsersClick} />
+              </Col>
+            </Row>
+          </Grid>
 
           <ButtonsSingleRemove
             activeUsersData = {this.state.activeUsers}
@@ -187,14 +203,15 @@ class Main extends PureComponent {
           />
 
           <Letters activeUsersData = {this.state.activeUsers} />
-        </Fragment>
+          </Row>
+        </Grid>
       );
     } else {
 
       return(
-        <Fragment>
-          <h1>Loading...</h1>
-        </Fragment>
+        <div className = "main-loader">
+          <hr/><hr/><hr/><hr/>
+        </div>
       );
     }
   }

@@ -1,4 +1,5 @@
 import React from 'react';
+import {ControlLabel, FormControl, FormGroup} from 'react-bootstrap';
 
 function Select(props) {
 /*
@@ -32,10 +33,18 @@ function Select(props) {
   const selectOptionsDataArray = props.selectOptionsData;
 
   return(
-    <select onChange = {handleChange}>
-      <option value = "select-an-author">-- Select an Author --</option>
-      {renderUsersSelectOptions(selectOptionsDataArray)}
-    </select>
+    <FormGroup controlId = "formControlsSelect">
+      <ControlLabel>Choose an Author</ControlLabel>
+      <FormControl
+        componentClass = "select"
+        className = "form-control"
+        onChange = {handleChange}
+        placeholeder = "Choose an Author"
+      >
+        <option value = "select-an-author">-- Select an Author --</option>
+        {renderUsersSelectOptions(selectOptionsDataArray)}
+      </FormControl>
+    </FormGroup>
   );
 }
 

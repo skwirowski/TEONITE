@@ -1,4 +1,7 @@
 import React from 'react';
+import {Grid, Row, Col, Table} from 'react-bootstrap';
+
+import './letters.style.css';
 
 function Letters(props) {
 
@@ -99,16 +102,26 @@ function Letters(props) {
   const displayData = prepareDisplayData(activeUsersData);
 
   return (
-    <table>
-      <tbody>
-      <tr>
-        <th>No</th>
-        <th>Letter</th>
-        <th>Count</th>
-      </tr>
-      {renderLettersTable(displayData)}
-      </tbody>
-    </table>
+    <Grid className = "letters-container">
+      <Row className = "show-grid">
+        <Col xs = {12}>
+          <Table striped bordered condensed hover
+                 className = "letters-table"
+          >
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Letter</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {renderLettersTable(displayData)}
+            </tbody>
+          </Table>
+        </Col>
+      </Row>
+    </Grid>
   );
 }
 

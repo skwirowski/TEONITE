@@ -1,0 +1,18 @@
+.single-remove-container {
+  margin-bottom: 20px;
+}
+
+.single-remove-buttons {
+  background: #f7f7f9;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+}
+
+.single-remove-buttons button {
+  margin: 5px;
+}
+
+.single-remove-buttons span {
+  margin-left: 10px;
+  top: 2px;
+}

@@ -1,4 +1,7 @@
 import React from 'react';
+import {Grid, Row, Col, Button} from 'react-bootstrap';
+
+import './buttonsSingleRemove.style.css';
 
 function ButtonsSingleRemove(props) {
 /*
@@ -20,13 +23,16 @@ function ButtonsSingleRemove(props) {
     const firstName = capitalizeFirstLetter(user.name.first);
 
     return (
-      <button
+      <Button
+        bsStyle = "info"
+        bsSize = "small"
         key = {index}
         value = {user.id.value}
         onClick = {handleClick}
       >
         {lastName} {firstName}
-      </button>
+        <span className = "glyphicon glyphicon-remove-sign"></span>
+      </Button>
     );
   });
 
@@ -36,9 +42,15 @@ function ButtonsSingleRemove(props) {
   const activeUsersDataArray = props.activeUsersData;
 
   return(
-    <div>
-      {renderActiveUsersButtons(activeUsersDataArray)}
-    </div>
+    <Grid className = "single-remove-container">
+      <Row className = "show-grid">
+        <Col xs = {12}>
+          <div className = "single-remove-buttons">
+            {renderActiveUsersButtons(activeUsersDataArray)}
+          </div>
+        </Col>
+      </Row>
+    </Grid>
   );
 }
 

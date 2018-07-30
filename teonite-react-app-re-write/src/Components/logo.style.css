@@ -1,0 +1,68 @@
+@import '../Utilities/fonts.css';
+
+@keyframes rotation {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(359deg);}
+}
+
+.logo-container {
+  width: 270px;
+  height: 270px;
+  border-radius: 50%;
+  position: relative;
+  perspective: 800px;
+  margin: 20px auto;
+  animation: rotation 50s infinite linear;
+}
+
+.logo-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  border: solid 5px #71d6ff;
+}
+
+.logo-container:hover .logo-card {
+  transform: rotateY(180deg);
+}
+
+.logo-card figure {
+  margin: 0;
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  backface-visibility: hidden;
+  line-height: 260px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 50px;
+  border: solid 4px white;
+}
+
+.logo-card .logo-front {
+  background: rgb(2, 26, 49);
+}
+
+.logo-front img {
+  position: absolute;
+  width: 80%;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logo-card .logo-back {
+  font-family: 'Titillium Web', sans-serif;
+  background: rgb(2, 26, 49);
+  transform: rotateY(180deg);
+}
+
+.logo-back span {
+  letter-spacing: 9px;
+}

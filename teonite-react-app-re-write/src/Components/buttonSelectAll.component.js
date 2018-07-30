@@ -1,4 +1,7 @@
 import React from 'react';
+import {Button} from 'react-bootstrap';
+
+import './buttonSelectAll.style.css'
 
 function ButtonSelectAllUsers(props) {
 /*
@@ -10,7 +13,13 @@ function ButtonSelectAllUsers(props) {
   };
 
   return(
-    <button onClick = {handleClick}>Select All Authors</button>
+    <Button
+      className = "select-all-button"
+      bsStyle = "primary"
+      onClick = {handleClick}
+    >
+      Select All Authors
+    </Button>
   );
 }
 
