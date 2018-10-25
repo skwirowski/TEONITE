@@ -9,7 +9,7 @@ function ButtonsSingleRemove(props) {
 */
   const handleClick = event => {
     event.preventDefault();
-    props.onRemoveUserClick(event.target.value);
+    props.onRemoveUserClick(event.currentTarget.value);
   };
 
 /*
